@@ -63,10 +63,12 @@ ENV PATH=$PATH:/usr/local/share/npm-global/bin:/home/node/.local/bin
 ENV SHELL=/bin/zsh
 ENV EDITOR=nano
 
-# ─── Global npm: Claude Code + Google Workspace CLI ─────────────────────────
+# ─── Global npm: Claude Code + Google Workspace CLI + Playwright CLI ─────────
 RUN npm install -g \
     @anthropic-ai/claude-code \
-    @googleworkspace/cli
+    @googleworkspace/cli \
+    @playwright/cli \
+    && playwright-cli install --skills
 
 ENTRYPOINT []
 CMD ["zsh"]
