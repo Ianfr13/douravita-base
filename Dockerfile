@@ -56,6 +56,11 @@ RUN echo "node ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/node \
     && chown -R node /commandhistory
 
 WORKDIR /workspace
+
+# ─── Claude Code: bypass permissions (container = sandbox) ────────────────
+COPY claude-settings.json /home/node/.claude/settings.json
+RUN chown node:node /home/node/.claude/settings.json
+
 USER node
 
 ENV NPM_CONFIG_PREFIX=/usr/local/share/npm-global
