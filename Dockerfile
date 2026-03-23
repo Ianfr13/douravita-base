@@ -61,6 +61,12 @@ WORKDIR /workspace
 COPY claude-settings.json /home/node/.claude/settings.json
 RUN chown node:node /home/node/.claude/settings.json
 
+# ─── VS Code: Claude Code extension bypass por default ────────────────────
+RUN mkdir -p /home/node/.vscode-server/data/Machine \
+    && echo '{"claudeCode.initialPermissionMode":"bypassPermissions"}' \
+       > /home/node/.vscode-server/data/Machine/settings.json \
+    && chown -R node:node /home/node/.vscode-server
+
 USER node
 
 ENV NPM_CONFIG_PREFIX=/usr/local/share/npm-global
