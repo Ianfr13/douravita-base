@@ -79,6 +79,7 @@ RUN npm install -g \
     @anthropic-ai/claude-code \
     @googleworkspace/cli \
     @playwright/cli \
+    @upstash/context7-mcp \
     && playwright-cli install --skills
 
 ENTRYPOINT []
