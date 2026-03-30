@@ -80,6 +80,7 @@ RUN npm install -g \
     @googleworkspace/cli \
     @playwright/cli \
     @upstash/context7-mcp \
+    firecrawl-cli \
     && playwright-cli install --skills
 
 ENTRYPOINT []
