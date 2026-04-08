@@ -81,6 +81,7 @@ RUN npm install -g \
     @playwright/cli \
     @upstash/context7-mcp \
     firecrawl-cli \
+    @openai/codex \
     && playwright-cli install --skills
 
 ENTRYPOINT []
