@@ -75,8 +75,9 @@ RUN ARCH=$(uname -m) \
        else ARCHIVE="rtk-aarch64-unknown-linux-gnu.tar.gz"; fi \
     && curl -fsSL "https://github.com/rtk-ai/rtk/releases/latest/download/${ARCHIVE}" -o /tmp/rtk.tar.gz \
     && tar -xzf /tmp/rtk.tar.gz -C /usr/local/bin/ rtk \
-    && rm /tmp/rtk.tar.gz \
-    && HOME=/home/node rtk init -g --auto-patch \
+    && rm /tmp/rtk.tar.gz
+COPY hooks/rtk-rewrite.sh /home/node/.claude/hooks/rtk-rewrite.sh
+RUN chmod +x /home/node/.claude/hooks/rtk-rewrite.sh \
     && chown -R node:node /home/node/.claude
 
 USER node
