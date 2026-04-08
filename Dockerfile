@@ -70,7 +70,8 @@ RUN mkdir -p /home/node/.vscode-server/data/Machine \
 # ─── RTK CLI + Claude Code hook ─────────────────────────────────────────────
 # Instala e configura no mesmo RUN (root) para garantir PATH correto.
 # HOME=/home/node faz rtk init escrever no settings do usuário node.
-RUN RTK_INSTALL_DIR=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh \
+RUN curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh -o /tmp/rtk-install.sh \
+    && RTK_INSTALL_DIR=/usr/local/bin sh /tmp/rtk-install.sh \
     && HOME=/home/node rtk init -g --auto-patch \
     && chown -R node:node /home/node/.claude
 
