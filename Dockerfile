@@ -44,9 +44,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && pip3 install --break-system-packages \
     "git+https://github.com/Ianfr13/Douravita-cli.git#subdirectory=obsidian"
 
-# ─── RTK CLI ────────────────────────────────────────────────────────────────
-RUN curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
-
 # ─── User + dirs ────────────────────────────────────────────────────────────
 RUN echo "node ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/node \
     && chmod 0440 /etc/sudoers.d/node \
@@ -70,6 +67,13 @@ RUN mkdir -p /home/node/.vscode-server/data/Machine \
        > /home/node/.vscode-server/data/Machine/settings.json \
     && chown -R node:node /home/node/.vscode-server
 
+# ─── RTK CLI + Claude Code hook ─────────────────────────────────────────────
+# Instala e configura no mesmo RUN (root) para garantir PATH correto.
+# HOME=/home/node faz rtk init escrever no settings do usuário node.
+RUN curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh \
+    && HOME=/home/node rtk init -g --auto-patch \
+    && chown -R node:node /home/node/.claude
+
 USER node
 
 ENV NPM_CONFIG_PREFIX=/usr/local/share/npm-global
@@ -87,9 +91,6 @@ RUN npm install -g \
     firecrawl-mcp \
     @openai/codex \
     && playwright-cli install --skills
-
-# ─── RTK: hook global no Claude Code ────────────────────────────────────────
-RUN rtk init -g --auto-patch
 
 ENTRYPOINT []
 CMD ["zsh"]
