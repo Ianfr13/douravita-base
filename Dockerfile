@@ -83,20 +83,25 @@ RUN chmod +x /home/node/.claude/hooks/rtk-rewrite.sh \
 USER node
 
 ENV NPM_CONFIG_PREFIX=/usr/local/share/npm-global
-ENV PATH=$PATH:/usr/local/share/npm-global/bin:/home/node/.local/bin
+ENV PATH=$PATH:/usr/local/share/npm-global/bin:/home/node/.local/bin:/home/node/.bun/bin
 ENV SHELL=/bin/zsh
 ENV EDITOR=nano
+
+# ─── Bun (requerido pelo plugin Honcho) ──────────────────────────────────────
+RUN curl -fsSL https://bun.sh/install | bash
 
 # ─── Global npm: Claude Code + Google Workspace CLI + Playwright CLI ─────────
 RUN npm install -g \
     @anthropic-ai/claude-code \
     @googleworkspace/cli \
-    @playwright/cli \
     @upstash/context7-mcp \
     firecrawl-cli \
-    firecrawl-mcp \
     @openai/codex \
-    && playwright-cli install --skills
+    @google/gemini-cli
+
+# ─── Plugin Honcho (memória persistente para Claude Code) ────────────────────
+RUN claude plugin marketplace add plastic-labs/claude-honcho \
+    && claude plugin install honcho@honcho
 
 ENTRYPOINT []
 CMD ["zsh"]
